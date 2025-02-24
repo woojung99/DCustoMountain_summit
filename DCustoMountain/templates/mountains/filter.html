@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+    <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">검색</button>
+    </form>
+    
+    <ul>
+        {% for mountain in mountains %}
+            <li>{{ mountain.name }} - {{ mountain.location }} ({{ mountain.height }}m)</li>
+        {% empty %}
+            <li>검색 결과가 없습니다.</li>
+        {% endfor %}
+        <form action="{% url 'mountains:experienced' mountain_id=mountain.id %}?next={{ action_redirect_url }}" method = "POST">
+            {% csrf_token %}
+            <button type="submit"
+                {% if user in mountain.experienced_users.all %}
+                    style="color: red;"
+                {% endif %}>
+                Experienced
+            </button>
+        </form>
+    </ul>
+</body>
+</html>
