@@ -17,7 +17,7 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'community:feeds' %}">DCustoMountain</a>
+                <a class="navbar-brand" href="#!">DCustoMountain</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -40,10 +40,22 @@
                             <!-- Post user-->
                             <h3 class="fw-bolder mb-1">{{ post.user }}</h3>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div>
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                            <!-- <div class="text-muted fst-italic mb-2">{{ post.created_at }}</div> -->
+                            <!-- 팔로우 버튼 -->
+                            <!-- 글의 작성자가 로그인 한 사용자라면 팔로우 버튼을 표시하지 않음 -->
+                            <!-- (자기 자신을 팔로우 하는 것을 방지) -->
+                            {% if user != post.user %}
+                            <a class="badge bg-secondary text-decoration-none link-light" 
+                                href="{% url 'users:follow' user_id=post.user.id %}">
+                                <!-- 이 Post의 작성자가 이미 자신의 팔로잉 목록에 포함된 경우 -->
+                                {% if post.user in user.following.all %}
+                                    Unfollow
+                                <!-- 이 Post의 작성자를 아직 팔로잉 하지 않은 경우 -->
+                                {% else %}
+                                    Follow
+                                {% endif %}
+                            </a>
+                            {% endif %}
                         </header>
 
                         <!-- Preview image figure-->
@@ -79,18 +91,35 @@
                     <section class="mb-5">
                         <div class="card bg-light">
                             <div class="card-body">
-                                <!-- Comment form-->
-                                <!-- <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form> -->
-                                <form method="POST" action="{% url 'community:add_comment' %}" class="mb-4">
-                                    {% csrf_token %}
-                                        <!-- 사용자가 직접 입력하지 않는 고정된 데이터를 form 내부에 위치 -->
-                                        <input type="hidden" name="post" value="{{ post.id }}">
-                                        <!-- 전달된 CommentForm 의 필드들 중 "content" 필드만 렌더링 -->
-                                        {{ comment_form.content }}
-                                        <button type="submit">게시</button>
-                                </form>
+                                <h4>댓글 수정하기</h4>
                                 <!-- Single comment-->
-                                {% for comment in post.comment_set.all %}
+                                <div class="d-flex" id="comment-{{ comment.id }}">
+                                    <div class="flex-shrink-0">
+                                        {% if comment.user.profile_image %}
+                                            <img class="rounded-circle" src="{{ comment.user.profile_image.url }}" alt="..." />
+                                        {% endif %}
+                                    </div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">{{ comment.user.username }}</div>
+                                        {{ comment.content }}
+                                        {% if user == comment.user %}
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="post" value="{{ post.id }}">
+                                                    {{ edit_comment_form.content }}
+                                                    <button class="badge bg-secondary text-decoration-none link-light" type="submit">수정</button>
+                                                </form>
+                                                <form method="POST" action="{% url 'community:delete_comment' comment_id=comment.id %}">
+                                                    {% csrf_token %}
+                                                    <button class="badge bg-secondary text-decoration-none link-light" type="submit">삭제</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <!-- {% for comment in post.comment_set.all %}
                                     <div class="d-flex" id="comment-{{ comment.id }}">
                                         <div class="flex-shrink-0">
                                             {% if comment.user.profile_image %}
@@ -113,7 +142,7 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                {% endfor %}
+                                {% endfor %} -->
                             </div>
                         </div>
                     </section>

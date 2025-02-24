@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from community.models import Post, Comment, PostImage, Hashtag
+from users.models import User
 from community.forms import PostForm, CommentForm
 from django.views.decorators.http import require_POST
 from django.urls import reverse
@@ -106,8 +107,8 @@ def add_comment(request):
         comment = form.save(commit=False)
         comment.user = request.user
         comment.save()
-
-        return redirect(reverse("community:post_detail", kwargs={"post_id":comment.post.id}))
+        url = reverse("community:post_detail", kwargs={"post_id":comment.post.id}) + f"#comment-{comment.id}"
+        return redirect(url)
 
 def edit_comment(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
@@ -156,7 +157,56 @@ def tags(request, tag_name):
         "tag_name":tag_name,
         "posts":posts,
     }
-    return render(request, "community/tags.html", context)
+    return render(request, "community/search_tags.html", context)
 
+def like_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    user = request.user
+    if user.like_posts.filter(id=post.id).exists():
+        user.like_posts.remove(post)
+    else:
+        user.like_posts.add(post)
+
+    url = reverse("community:feeds") + f"#post-{post.id}"
+    return redirect(url)
+
+def save_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    user = request.user
+    if user.save_posts.filter(id=post_id).exists():
+        user.save_posts.remove(post)
+    else:
+        user.save_posts.add(post)
+
+    url = reverse("community:feeds") + f"#post-{post.id}"
+    return redirect(url)
+
+def search_results(request):
+    search_string = request.GET.get("search_string", None)
+    if search_string:
+        if search_string[0] == "@":
+            user_name = search_string[1:].strip()
+            target_user = User.objects.get(username=user_name)
+            context = {
+                "target_user":target_user,
+            } 
+        elif search_string[0] == "#":
+            tag_name = search_string[1:].strip()
+            return redirect(reverse("community:tags", kwargs={"tag_name":tag_name}))
+        else:
+            posts = Post.objects.filter(content__contains = search_string)
+            context = {
+                "posts":posts,
+            }
+
+    else:
+        return HttpResponseForbidden("하단의 검색 방법을 참고하여 검색하세요")
+    
+    return render(request, "community/search_results.html", context)
+    
+    
+    
+    
+    
 
     
