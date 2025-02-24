@@ -30,13 +30,14 @@ class getRunChromeDriver():
 
 class mainDriver():
     url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
-    urlnum = "1"
+    urlnum = 1
     urltail = "&searchMnt=&searchCnd=&mn=AR02_02_05_01&orgId=&mntUnit=10"
     mtnNameList = []
 
-    driver = getRunChromeDriver.runChromeDriver(url1+urlnum+urltail)
+    for urlnum in range(1,11):
+        driver = getRunChromeDriver.runChromeDriver(url1+f'{urlnum}'+urltail)
+        
+        # 산 이름 가져오기
+        mtnNameList = getMtnName.mtnName(driver, mtnNameList)
     
-    # 산 이름 가져오기
-    mtnNameList = getMtnName.mtnName(driver, mtnNameList)
-
     print(mtnNameList)
