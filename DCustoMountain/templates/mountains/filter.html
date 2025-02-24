@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+    <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">검색</button>
+    </form>
+    
+    <ul>
+        {% for mountain in mountains %}
+            <li>{{ mountain.name }} - {{ mountain.location }} ({{ mountain.height }}m)</li>
+        {% empty %}
+            <li>검색 결과가 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
