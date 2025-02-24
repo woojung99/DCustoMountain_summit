@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>Add Post</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <label for="id_images">이미지</label>
+                <input id="id_images" name="images" type="file" multiple>
+            </div>
+            {{ form.as_p }}
+            <div>
+                <label for="id_tags">해시태그</label>
+                <input id="id_tags" name="tags" type="text" 
+                    placeholder="쉼표(,)로 구분하여 여러 태그 입력">
+            </div>
+            <button type="submit">게시</button>
+        </form>    
+    </body>
+</html>
