@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from users.forms import LoginForm, SignupForm, ProfileForm 
 from users.models import User 
-from mountains.models import Mountain
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required 
 from django.urls import reverse
 
 # Create your views here.
@@ -62,7 +60,6 @@ def profile(request, user_id):
     }
     return render(request, "users/profile.html", context)
 
-@login_required 
 def edit_profile(request, user_id): 
     if request.method == "POST": 
         form = ProfileForm(request.POST, request.FILES, instance=request.user) 
@@ -128,10 +125,24 @@ def follow(request, user_id):
     url_next = request.GET.get("next") or reverse("users:profile", args=[user.id])
     return redirect(url_next)
 
-@login_required 
 def report_user(request, user_id): 
     reported_user = get_object_or_404(User, id = user_id)
     reported_user.report_user() 
     messages.success(request, f"{reported_user.username} 님을 신고했습니다.")
     return redirect("users:profile", user_id=user_id)
 
+def experienced_list(request): 
+    user = request.user 
+    mountains = user.experienced_mountains.all() 
+    context = {
+        "mountains" : mountains, 
+    }
+    return render(request, "users/experienced_list.html", context)
+
+def wish_list(request): 
+    user = request.user 
+    mountains = user.wish_mountains.all() 
+    context = {
+        "mountains" : mountains, 
+    }
+    return render(request, "users/wish_list.html", context)

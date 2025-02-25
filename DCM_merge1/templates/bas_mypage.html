@@ -25,8 +25,9 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'users:signup' %}">Add account</a></li>
+                        <li><a class="dropdown-item" href="#!">Change account</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -59,7 +60,7 @@
                                 Mypage
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link" href="{% url 'users:profile' user_id=user.id %}">
+                            <a class="nav-link" href="{% url 'users:mypage' user_id=user.id %}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Profile
                             </a>
@@ -70,13 +71,13 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'users:like_list' %}">Likes</a>
-                                    <a class="nav-link" href="{% url 'users:comment_list' %}">Comments</a>
-                                    <a class="nav-link" href="{% url 'users:save_list' %}">Saves</a>
+                                    <a class="nav-link" href="layout-static.html">Likes</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Comments</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Saves</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="{% url 'cal:calendar' %}">
+                            <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Calendar
                             </a>
@@ -88,51 +89,48 @@
                     </div>
                 </nav>
             </div>
+            {%  %}{%  %}
+
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Mypage</h1>
-                        <hr class="main-divider" />
+                        <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">My records</li>
+                            <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body fs-5 fw-semibold">Experienced Mountains</div>
-                                    <div class="card-body fs-2 text-end">{{ user.experienced_mountains.count }} / 100</div>
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Primary Card</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="{% url 'users:experienced_list' %}">View Details</a>
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Warning Card</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body fs-5 fw-semibold">Wish Mountains</div>
-                                    <div class="card-body fs-2 text-end">{{ user.wish_mountains.count }} / 100</div>
+                                    <div class="card-body">Success Card</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="{% url 'users:wish_list' %}">View Details</a>
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body fs-5 fw-semibold">Total distance this year</div>
-                                    <div class="card-body fs-2 text-end">total km</div>
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Danger Card</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="{% url 'users:wish_list' %}">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body fs-5 fw-semibold">Total duration this year</div>
-                                    <div class="card-body fs-2 text-end">total hrs</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="{% url 'users:wish_list' %}">View Details</a>
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
@@ -648,6 +646,8 @@
                         </div>
                     </div>
                 </main>
+
+                {%  %}{%  %}
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">

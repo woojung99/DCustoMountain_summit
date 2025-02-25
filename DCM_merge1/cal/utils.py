@@ -13,7 +13,7 @@ class Calendar(HTMLCalendar):
 		contents_per_day = contents.filter(hikedate__day=day)
 		d = ''
 		for event in contents_per_day:
-			d += f"<li><a href='{reverse('cal:hike_detail', args=[event.id])}'>{event.mountain.name}</a></li>"
+			d += f"<li><a href='{reverse('cal:calendar_detail', args=[event.id])}'>{event.mountain.name}</a></li>"
 
 		if day != 0:
 			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"

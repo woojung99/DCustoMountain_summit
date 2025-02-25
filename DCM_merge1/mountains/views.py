@@ -21,11 +21,20 @@ def filter(request):
 
 def experienced(request, mountain_id): 
     mountain = Mountain.objects.get(id = mountain_id)
-    print(mountain) 
     user = request.user 
     if user.experienced_mountains.filter(id = mountain.id).exists(): 
         user.experienced_mountains.remove(mountain) 
     else: 
         user.experienced_mountains.add(mountain) 
+    url_next = request.GET.get("next") or reverse("mountains:filter")
+    return redirect(url_next)
+
+def wish(request, mountain_id): 
+    mountain = Mountain.objects.get(id = mountain_id)
+    user = request.user 
+    if user.wish_mountains.filter(id = mountain.id).exists(): 
+        user.wish_mountains.remove(mountain) 
+    else: 
+        user.wish_mountains.add(mountain) 
     url_next = request.GET.get("next") or reverse("mountains:filter")
     return redirect(url_next)

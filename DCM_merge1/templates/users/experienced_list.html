@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+    <div>
+        <header>
+            <h2>등산해 본 산 목록</h2>
+            <div>{{ mountains.count }}</div>
+        </header>
+        <div>
+            {% for mountain in mountains %}
+                <div>
+                    <a href="">
+                        {{ mountain.name }}
+                    </a>
+                </div>
+            {% empty %}
+                <p>등산해 본 산이 없습니다.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
