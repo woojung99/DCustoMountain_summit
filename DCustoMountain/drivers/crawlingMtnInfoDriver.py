@@ -8,7 +8,7 @@ import time
 mtnNameList = [] # 산 이름 리스트
 
 locationNameList = [] # 지역 이름 리스트
-periodList = [] # 산행 기간 리스트
+leadTimeList = [] # 산행 기간 리스트
 mtnHeightList = [] # 산 높이 리스트
 mtnDifficultyList = [] # 산 난이도 리스트
 
@@ -47,20 +47,20 @@ class getInfo():
         result_name = soup.select("table.tbl td")
 
         # 1: 지역
-        result_value = result_name[1].string.strip()
+        result_value = result_name[1].string.replace(" ", "").replace("\t", "").replace("\n", "")
         # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
         if result_value != '':
             locationNameList.append(result_value)
         else:
             locationNameList.append(None)
         # 7: 산행기간
-        result_value = result_name[7].string.strip()
+        result_value = result_name[7].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
-            periodList.append(result_value)
+            leadTimeList.append(result_value)
         else:
-            periodList.append(None)
+            leadTimeList.append(None)
         # 9: 산높이
-        result_value = result_name[9].string.strip()
+        result_value = result_name[9].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
             mtnHeightList.append(result_value)
         else:
@@ -72,7 +72,7 @@ class getInfo():
         else:
             mtnDifficultyList.append(None)
         
-        return locationNameList, periodList, mtnHeightList, mtnDifficultyList
+        return locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList
 
 class getMainDriver():
     url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
@@ -94,10 +94,10 @@ class getMainDriver():
             # 7: 산행기간
             # 9: 산높이
             # 11: 산 난이도
-            locationNameList, periodList, mtnHeightList, mtnDifficultyList = getInfo.otherInfos(driver, mtn_order)
+            locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList = getInfo.otherInfos(driver, mtn_order)
     
     print(locationNameList)
-    print(periodList)
+    print(leadTimeList)
     print(mtnHeightList)
     print(mtnDifficultyList)
     print('THE END')
