@@ -29,3 +29,6 @@ def experienced(request, mountain_id):
         user.experienced_mountains.add(mountain) 
     url_next = request.GET.get("next") or reverse("mountains:filter")
     return redirect(url_next)
+
+def search_mtn_info(request):
+    return render(request, "mountains/search_mtn_info.html")
