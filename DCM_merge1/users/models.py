@@ -23,6 +23,12 @@ class User(AbstractUser):
         related_name="save_users",
         blank=True,
     )
+    report_posts = models.ManyToManyField(
+        "community.Post",
+        verbose_name="신고한 Post 목록",
+        related_name="report_users",
+        blank=True,
+    )
     following = models.ManyToManyField(
         "self",
         verbose_name="팔로우 중인 사용자들",
@@ -53,6 +59,10 @@ class User(AbstractUser):
         if self.report_count >= 5: 
             self.block_flag = True
         self.save() 
+    
+    def cancel_report_user(self):
+        self.report_count -= 1
+        self.save()
     
 class Relationship(models.Model):
     from_user = models.ForeignKey(

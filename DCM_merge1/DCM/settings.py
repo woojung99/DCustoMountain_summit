@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages_constants
+
 
 AUTH_USER_MODEL = "users.User"
 
@@ -73,6 +75,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+MESSAGE_LEVEL = messages_constants.DEBUG
 
 WSGI_APPLICATION = "DCM.wsgi.application"
 

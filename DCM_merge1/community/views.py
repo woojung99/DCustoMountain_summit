@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from community.models import Post, Comment, PostImage, Hashtag
 from users.models import User
 from community.forms import PostForm, CommentForm
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.http import HttpResponseForbidden
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 def feeds(request):
@@ -43,11 +45,12 @@ def add_post(request):
             post.save()
 
             # 전송된 이미지들을 순회하며 PostImage 객체 생성
-            for image_file in request.FILES.getlist("photo"):
+            for image_file in request.FILES.getlist("images"):
                 PostImage.objects.create(
                     post=post,
                     photo=image_file,
                 )
+                print(image_file)
             
             # 문자열로 전달된 해시태그들로 Hashtag 객체 생성하고 post 객체에 추가
             tag_string = request.POST.get("tags")
@@ -84,7 +87,10 @@ def edit_post(request, post_id):
     else:
         form = PostForm(instance=post)
 
-    context = {"form":form}
+
+    context = {
+        "form":form,
+    }
     return render(request, "community/add_post.html", context)
 
 @require_POST
@@ -157,7 +163,7 @@ def tags(request, tag_name):
         "tag_name":tag_name,
         "posts":posts,
     }
-    return render(request, "community/tags.html", context)
+    return render(request, "community/search_tags.html", context)
 
 def like_post(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -181,28 +187,67 @@ def save_post(request, post_id):
     url = reverse("community:feeds") + f"#post-{post.id}"
     return redirect(url)
 
-def search_result(request):
+def report_post(request, post_id): 
+    post = Post.objects.get(id=post_id)
+    user = request.user
+    reported_user = get_object_or_404(User, id = post.user.id)
+    if user.report_posts.filter(id=post.id).exists():
+        user.report_posts.remove(post)
+        post.cancel_report_post()
+        reported_user.cancel_report_user()
+        messages.success(request, f"{reported_user.username} 님의 게시글의 신고를 취소하였습니다.")
+        print(post.report_count)
+        print(reported_user.report_count)
+
+    else:
+        user.report_posts.add(post)
+        post.report_post()
+        reported_user.report_user()
+        messages.success(request, f"{reported_user.username} 님의 게시글을 신고하였습니다.")
+        print(post.report_count)
+        print(reported_user.report_count)
+
+    url = reverse("community:feeds") + f"#post-{post.id}"
+    return redirect(url)
+
+def search_results(request):
     search_string = request.GET.get("search_string", None)
     if search_string:
         if search_string[0] == "@":
             user_name = search_string[1:].strip()
-            user = User.objects.filter(username=user_name)
+            target_user = User.objects.get(username=user_name)
             context = {
-                "user":user,
-            }
-        if search_string[0] == "#":
+                "search_string":search_string,
+                "target_user":target_user,
+            } 
+        elif search_string[0] == "#":
             tag_name = search_string[1:].strip()
             return redirect(reverse("community:tags", kwargs={"tag_name":tag_name}))
         else:
             posts = Post.objects.filter(content__contains = search_string)
             context = {
+                "search_string":search_string,
                 "posts":posts,
             }
 
     else:
         return HttpResponseForbidden("하단의 검색 방법을 참고하여 검색하세요")
     
-    return render(request, "community/search_result.html", context)
+    return render(request, "community/search_results.html", context)
+
+def trending(request):
+    posts = Post.objects.all()
+    likes_count = [post.like_users.count() for post in posts]
+    posts_dict = dict(zip(posts, likes_count))
+    posts_rank_list = sorted(posts_dict.items(), key=lambda x: (-x[1], -x[0].id))
+    top5_list = [i[0] for i in posts_rank_list[:5]]
+    context = {
+        "top5_list":top5_list,
+    }
+    return render(request, "community/trending.html", context)
+
+
+
     
 
     
