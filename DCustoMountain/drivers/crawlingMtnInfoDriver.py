@@ -21,8 +21,9 @@ class getRunChromeDriver():
         driver.implicitly_wait(10)
         return driver
 
-# 산 이름 가져오기
-class getMtnName():
+
+class getInfo():
+    # 산 이름 가져오기
     def mtnName(driver, mtnNameList):
         mtn_names = driver.find_elements(By.CSS_SELECTOR, ".list_info strong")
         for mtn_name in mtn_names:
@@ -30,22 +31,35 @@ class getMtnName():
         
         return mtnNameList
 
-# 지역 가져오기
-class getRegionName():
-    def regionName(driver, regionNameList, region_order):
-        
+    # 지역 가져오기
+    def regionName(driver, regionNameList, mtn_order):
         mtnTitle = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
-        mtnTitle[region_order].click()
+        mtnTitle[mtn_order].click()
         time.sleep(1)
         soup = BeautifulSoup(driver.page_source, "lxml")
-        region_name = soup.select("table.tbl td")
-        # 지역명이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
-        if region_name is not None or '':
-            regionNameList.append(region_name[1].string.strip())
+        result_name = soup.select("table.tbl td")
+        # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
+        if result_name is not None or '':
+            regionNameList.append(result_name[1].string.strip())
         else:
             regionNameList.append(None)
 
         return regionNameList
+
+    # 산행기간 가져오기
+    def periodMtnName(driver, periodList, mtn_order):
+        mtnTitle = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
+        mtnTitle[mtn_order].click()
+        time.sleep(1)
+        soup = BeautifulSoup(driver.page_source, "lxml")
+        result_name = soup.select("table.tbl td")
+        # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
+        if result_name is not None or '':
+            periodList.append(result_name[7].string.strip())
+        else:
+            periodList.append(None)
+
+        return periodList
 
 
 
@@ -55,24 +69,38 @@ class getMainDriver():
     urltail = "&searchMnt=&searchCnd=&mn=AR02_02_05_01&orgId=&mntUnit=10"
     mtnNameList = [] # 산 이름 리스트
     regionNameList = [] # 지역 이름 리스트
+    periodList = [] # 산행 기간 리스트
 
+    # 산이름GET START
     for urlpagenum in range(1,11):
         driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
-        
-        # 산 이름 가져오기
-        mtnNameList = getMtnName.mtnName(driver, mtnNameList)
-    
-    # 산 이름 리스트
+        mtnNameList = getInfo.mtnName(driver, mtnNameList)
     print(mtnNameList)
+    # 산이름GET END
 
-
+    # 지역이름GET START
     for urlpagenum in range(1,11):
-        for region_order in range(0,10):
-            # 지역
+        for mtn_order in range(0,10):
             driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
-            regionNameList = getRegionName.regionName(driver, regionNameList, region_order)
+            regionNameList = getInfo.regionName(driver, regionNameList, mtn_order)
 
-    # 지역 이름 리스트
     print(regionNameList)
+    # 지역이름GET END
+
+    # 산행기간GET START
+    for urlpagenum in range(1,11):
+        for mtn_order in range(0,10):
+            driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
+            periodList = getInfo.periodMtnName(driver, periodList, mtn_order)
+
+    print(periodList)
+    # 산행기간GET END
+
+    # 산높이GET START
+    # 산높이GET END
+    
+
+
+
 
 
