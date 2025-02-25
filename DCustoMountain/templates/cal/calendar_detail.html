@@ -1,9 +1,0 @@
-{% extends "cal/base.html" %}
-
-{% block content %}
-    <h2>{{ hike.mountain.name }} ({{ hike.hikedate }})</h2>
-    <p><strong>거리:</strong> {{ hike.distance }} km</p>
-    <p><strong>소요 시간:</strong> {{ hike.duration }}</p>
-    <p><strong>메모:</strong> {{ hike.memo }}</p>
-    <a href="{% url 'cal:calendar' %}">← 달력으로 돌아가기</a>
-{% endblock %}

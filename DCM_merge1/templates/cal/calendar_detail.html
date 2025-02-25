@@ -1,0 +1,17 @@
+{% extends "cal/base.html" %}
+
+{% block content %}
+    <h2>{{ calendar.mountain.name }} ({{ calendar.hikedate }})</h2>
+    <p><strong>거리:</strong> {{ calendar.distance }} km</p>
+    <p><strong>소요 시간:</strong> {{ calendar.duration }}</p>
+    <p><strong>메모:</strong> {{ calendar.memo }}</p>
+    <div>
+        <a href="{% url 'cal:edit_calendar' calendar_id=calendar.id %}">
+            <button type="submit" class="btn btn-primary">편집</button>
+        </a>
+        <a href="{% url 'cal:delete_calendar' calendar_id=calendar.id %}">
+            <button type="submit" value="delete" class="btn btn-primary">삭제</button>
+        </a>
+    </div>
+    <a href="{% url 'cal:calendar' %}">← 달력으로 돌아가기</a>
+{% endblock %}

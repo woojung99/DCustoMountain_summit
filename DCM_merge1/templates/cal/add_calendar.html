@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>Add Calendar</title>
+    </head>
+    <body>
+        <!-- <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <form method="POST">
+                {% csrf_token %}
+                <label for="mountain">산:</label>
+                {{ form.mountain }}
+            
+                <label for="year">연도:</label>
+                {{ form.year }}
+                <label for="month">월:</label>
+                {{ form.month }}
+                <label for="day">일:</label>
+                {{ form.day }}
+            
+                <label for="distance">등산 거리 (km):</label>
+                {{ form.distance }}
+            
+                <label for="hours">소요 시간 (시간):</label>
+                {{ form.hours }}
+                <label for="minutes">소요 시간 (분):</label>
+                {{ form.minutes }}
+            
+                <label for="memo">메모:</label>
+                {{ form.memo }}
+            
+                <button type="submit">저장</button>
+            </form> -->
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">저장</button>
+            </form>
+        </form>    
+    </body>
+</html>
