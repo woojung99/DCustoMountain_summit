@@ -75,33 +75,35 @@ class getInfo():
         return locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList
 
 class getMainDriver():
-    url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
-    urlpagenum = 1
-    urltail = "&searchMnt=&searchCnd=&mn=AR02_02_05_01&orgId=&mntUnit=10"
+    def initDriver():
+        url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
+        urlpagenum = 1
+        urltail = "&searchMnt=&searchCnd=&mn=AR02_02_05_01&orgId=&mntUnit=10"
 
-    # 산이름GET START
-    for urlpagenum in range(1,11):
-        driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
-        mtnNameList = getInfo.mtnName(driver, mtnNameList)
-    print(mtnNameList)
-    # 산이름GET END
-
-    # 지역, 산행기간, 산높이, 산 난이도GET START
-    for urlpagenum in range(1,11):
-        for mtn_order in range(0,10):
+        # 산이름GET START
+        for urlpagenum in range(1,11):
             driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
-            # 1: 지역
-            # 7: 산행기간
-            # 9: 산높이
-            # 11: 산 난이도
-            locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList = getInfo.otherInfos(driver, mtn_order)
-    
-    print(locationNameList)
-    print(leadTimeList)
-    print(mtnHeightList)
-    print(mtnDifficultyList)
-    print('THE END')
-    # 지역, 산행기간, 산높이, 산 난이도GET END
+            mtnNameList = getInfo.mtnName(driver, mtnNameList)
+        print(mtnNameList)
+        # 산이름GET END
+
+        # 지역, 산행기간, 산높이, 산 난이도GET START
+        for urlpagenum in range(1,11):
+            for mtn_order in range(0,10):
+                driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
+                # 1: 지역
+                # 7: 산행기간
+                # 9: 산높이
+                # 11: 산 난이도
+                locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList = getInfo.otherInfos(driver, mtn_order)
+        
+        print(locationNameList)
+        print(leadTimeList)
+        print(mtnHeightList)
+        print(mtnDifficultyList)
+        print('THE END')
+        # 지역, 산행기간, 산높이, 산 난이도GET END
+        return mtnNameList, locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList
 
 
 
