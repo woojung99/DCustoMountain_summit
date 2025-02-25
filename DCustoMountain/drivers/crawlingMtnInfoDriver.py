@@ -66,7 +66,7 @@ class getInfo():
         else:
             mtnHeightList.append(None)
         # 11: 산 난이도
-        result_value = result_name[11].string.strip()
+        result_value = result_name[11].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
             mtnDifficultyList.append(result_value)
         else:
