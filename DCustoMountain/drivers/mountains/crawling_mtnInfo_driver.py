@@ -5,15 +5,15 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import time
 
-mtnNameList = [] # 산 이름 리스트
+mtn_name_list = [] # 산 이름 리스트
 
-locationNameList = [] # 지역 이름 리스트
-leadTimeList = [] # 산행 기간 리스트
-mtnHeightList = [] # 산 높이 리스트
-mtnDifficultyList = [] # 산 난이도 리스트
+location_name_list = [] # 지역 이름 리스트
+leadtime_list = [] # 산행 기간 리스트
+mtn_height_list = [] # 산 높이 리스트
+mtn_difficulty_list = [] # 산 난이도 리스트
 
-class getRunChromeDriver():
-    def runChromeDriver(url):
+class get_run_chrome_driver():
+    def run_chrome_driver(url):
         # 크롬 드라이버 실행
         driver = webdriver.Chrome()
         
@@ -29,19 +29,19 @@ class getRunChromeDriver():
         return driver
 
 
-class getInfo():
+class get_info():
     # 산 이름 가져오기
-    def mtnName(driver, mtnNameList):
+    def mtn_name(driver, mtn_name_list):
         mtn_names = driver.find_elements(By.CSS_SELECTOR, ".list_info strong")
         for mtn_name in mtn_names:
-            mtnNameList.append(mtn_name.text)
+            mtn_name_list.append(mtn_name.text)
         
-        return mtnNameList
+        return mtn_name_list
 
     # 지역, 산행기간, 산 높이, 산 난이도 가져오기
-    def otherInfos(driver, mtn_order):
-        mtnTitle = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
-        mtnTitle[mtn_order].click()
+    def other_infos(driver, mtn_order):
+        mtn_title = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
+        mtn_title[mtn_order].click()
         time.sleep(1)
         soup = BeautifulSoup(driver.page_source, "lxml")
         result_name = soup.select("table.tbl td")
@@ -50,60 +50,60 @@ class getInfo():
         result_value = result_name[1].string.replace(" ", "").replace("\t", "").replace("\n", "")
         # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
         if result_value != '':
-            locationNameList.append(result_value)
+            location_name_list.append(result_value)
         else:
-            locationNameList.append(None)
+            location_name_list.append(None)
         # 7: 산행기간
         result_value = result_name[7].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
-            leadTimeList.append(result_value)
+            leadtime_list.append(result_value)
         else:
-            leadTimeList.append(None)
+            leadtime_list.append(None)
         # 9: 산높이
         result_value = result_name[9].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
-            mtnHeightList.append(result_value)
+            mtn_height_list.append(result_value)
         else:
-            mtnHeightList.append(None)
+            mtn_height_list.append(None)
         # 11: 산 난이도
         result_value = result_name[11].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
-            mtnDifficultyList.append(result_value)
+            mtn_difficulty_list.append(result_value)
         else:
-            mtnDifficultyList.append(None)
+            mtn_difficulty_list.append(None)
         
-        return locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList
+        return location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
 
-class getMainDriver():
-    def initDriver():
+class get_main_driver():
+    def init_driver():
         url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
         urlpagenum = 1
         urltail = "&searchMnt=&searchCnd=&mn=AR02_02_05_01&orgId=&mntUnit=10"
 
         # 산이름GET START
         for urlpagenum in range(1,11):
-            driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
-            mtnNameList = getInfo.mtnName(driver, mtnNameList)
-        print(mtnNameList)
+            driver = get_run_chrome_driver.run_chrome_driver(url1+f'{urlpagenum}'+urltail)
+            mtn_name_list = get_info.mtn_name(driver, mtn_name_list)
+        print(mtn_name_list)
         # 산이름GET END
 
         # 지역, 산행기간, 산높이, 산 난이도GET START
         for urlpagenum in range(1,11):
             for mtn_order in range(0,10):
-                driver = getRunChromeDriver.runChromeDriver(url1+f'{urlpagenum}'+urltail)
+                driver = get_run_chrome_driver.run_chrome_driver(url1+f'{urlpagenum}'+urltail)
                 # 1: 지역
                 # 7: 산행기간
                 # 9: 산높이
                 # 11: 산 난이도
-                locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList = getInfo.otherInfos(driver, mtn_order)
+                location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list = get_info.other_infos(driver, mtn_order)
         
-        print(locationNameList)
-        print(leadTimeList)
-        print(mtnHeightList)
-        print(mtnDifficultyList)
+        print(location_name_list)
+        print(leadtime_list)
+        print(mtn_height_list)
+        print(mtn_difficulty_list)
         print('THE END')
         # 지역, 산행기간, 산높이, 산 난이도GET END
-        return mtnNameList, locationNameList, leadTimeList, mtnHeightList, mtnDifficultyList
+        return mtn_name_list, location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
 
 
 
