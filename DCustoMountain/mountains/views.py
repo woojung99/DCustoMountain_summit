@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from mountains.forms import FilterForm
 from mountains.models import Mountain
 from django.urls import reverse
+from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
 
 def filter(request):
     form = FilterForm(request.GET or None)
@@ -31,8 +33,6 @@ def experienced(request, mountain_id):
     return redirect(url_next)
 
 def search_mtn_info(request):
-#    keyword = request.GET.get("keyword", None)
-#    print(keyword)
 #    print(request.GET) # request.GET으로 전달된 데이터를 출력
     mtn_difficulty = request.GET.get("mtn_difficulty", None) # 난이도 intermediate
     location = request.GET.get("location", None) # 지역 Seoul
@@ -61,14 +61,23 @@ def search_mtn_info(request):
     # 최종 검색 결과
     search_result_list = query.distinct()  # 중복 제거
 
-    print('----- 검색 결과 -----')
-    print(search_result_list)
-    print(len(search_result_list))
-    print(search_result_list[0].mtn_difficulty)
+     # 검색 결과 여부에 따른 메시지 설정
+    if not search_result_list.exists():
+        message = "검색 결과가 없습니다."
+    else:
+        message = None
 
-    return render(request, "mountains/search_mtn_info.html")
+    # 페이지네이션 설정: 한 페이지에 9개씩
+    paginator = Paginator(query, 9)  # 한 페이지에 9개씩
+    page_number = request.GET.get('page')  # 페이지 번호
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "mountains/search_mtn_info.html", {
+        "results": search_result_list,
+        "message": message,
+        'page_obj': page_obj,
+    })
 
 def search_mtn_details(request, pk):
-
-
-    return render(request, "mountains/search_mtn_details.html")
+    mountain = get_object_or_404(Mountain, pk=pk)
+    return render(request, 'mountains/search_mtn_details.html', {'mountain': mountain})

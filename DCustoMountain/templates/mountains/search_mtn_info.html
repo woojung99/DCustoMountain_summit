@@ -74,30 +74,47 @@
     <!-- 검색조건 END -->
 
     <!-- 검색결과 START -->
-    총 게시글: 100건(1/10)
-    <table>
-        <tr>
-            <td>관악산</td>
-            <td>민주지산</td>
-            <td>금정산</td>
-        </tr>
-        <tr>
-            <td>재약산</td>
-            <td>치악산</td>
-            <td>삼악산</td>
-        </tr>
-        <tr>
-            <td>관악산</td>
-            <td>민주지산</td>
-            <td>금정산</td>
-        </tr>
-    </table>
-
-    <!-- 검색결과 END -->
-
-    <!-- 페이징 START -->
-    ◀  1   2   3   4   5   6   7   8   9   10 ▶
-    <!-- 페이징 END -->
+    <div>
+        총 게시글: {{ page_obj.paginator.count }}건 ({{ page_obj.number }}/{{ page_obj.paginator.num_pages }})
+    </div>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+    <table border="1">
+        <tr> <!-- 첫 번째 행 -->
+        {% for mountain in page_obj %}
+            <td style="text-align:center;">
+                <a href="{% url 'mountains:search_mtn_details' pk=mountain.pk %}">
+                    <img src="{{ mountain.mtn_image }}" width="320" height="280" alt="산 이미지가 없습니다">
+                </a>
+                <br/>
+                {{ mountain.name }}
+            </td>
     
+            {% if forloop.counter|divisibleby:3 %}
+                </tr> <!-- 3개마다 행을 닫음 -->
+                {% if not forloop.last %}
+                    <tr> <!-- 새로운 행 시작 -->
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+    
+    <!-- 페이지네이션 시작 -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <div border="1"><a href="?page=1">&laquo; 처음</a></div>
+            <div border="1"><a href="?page={{ page_obj.previous_page_number }}">이전</a></div>
+        {% endif %}
+        
+        <span class="current-page">{{ page_obj.number }}</span>
+    
+        {% if page_obj.has_next %}
+            <div border="1"><a href="?page={{ page_obj.next_page_number }}">다음</a></div>
+            <div border="1"><a href="?page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a></div>
+        {% endif %}
+    </div>
+    <!-- 페이지네이션 끝 -->
+    {% endif %}
 </body>
 </html>

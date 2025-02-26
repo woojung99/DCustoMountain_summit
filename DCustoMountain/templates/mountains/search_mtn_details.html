@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+</head>
+<body>
+    {{ mountain.name }}
+    <hr/>
+    <table>
+        <tr>
+            <th>구분</th>
+            <th>내용</th>
+        </tr>
+        <tr>
+            <td>지역</td>
+            <td>{{ mountain.location }}</td>
+        </tr>
+        <tr>
+            <td>난이도</td>
+            <td>{{ mountain.mtn_difficulty }}</td>
+        </tr>
+        <tr>
+            <td>소요시간</td>
+            <td>{{ mountain.leadtime }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'mountains:search_mtn_info' %}">목록보기</a>
+</body>
+</html>

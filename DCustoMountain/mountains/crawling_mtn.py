@@ -50,29 +50,29 @@ class get_info():
 
         # 1: 지역
         result_value = result_name[1].string.replace(" ", "").replace("\t", "").replace("\n", "")
-        # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 None을 추가
+        # 결괏값이 있는 경우만 리스트에 추가, 없는 경우는 공백('')을 추가
         if result_value != '':
             location_name_list.append(result_value)
         else:
-            location_name_list.append(None)
+            location_name_list.append('')
         # 7: 산행기간
         result_value = result_name[7].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
             leadtime_list.append(result_value)
         else:
-            leadtime_list.append(None)
+            leadtime_list.append('')
         # 9: 산높이
         result_value = result_name[9].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
             mtn_height_list.append(result_value)
         else:
-            mtn_height_list.append(None)
+            mtn_height_list.append('')
         # 11: 산 난이도
         result_value = result_name[11].string.replace(" ", "").replace("\t", "").replace("\n", "")
         if result_value != '':
             mtn_difficulty_list.append(result_value)
         else:
-            mtn_difficulty_list.append(None)
+            mtn_difficulty_list.append('')
         
         return location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
     
@@ -92,7 +92,7 @@ class getImg():
         if imgaddr != '':
             mtn_img_list.append(defaltaddr + imgaddr)
         else:
-            mtn_img_list.append(None)
+            mtn_img_list.append('')
 
         return mtn_img_list
 
