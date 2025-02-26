@@ -1,47 +1,103 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
 </head>
 <body>
-    <table border="1">
+    <form method="GET">
+    <!-- 검색조건 START -->
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>구분선택</th>
+            </tr>
+            <tr>
+                <td>난이도</td>
+                <td>
+                    <input type="radio" id="Beginner" name="mtn_difficulty" value="초급" checked="checked"><label for="Beginner">초급</label>
+                    <input type="radio" id="intermediate" name="mtn_difficulty" value="중급"><label for="intermediate">중급</label>
+                    <input type="radio" id="advanced" name="mtn_difficulty" value="고급"><label for="advanced">고급</label>
+                    <input type="radio" id="difficulty_no_matter" name="mtn_difficulty" value="상관없음"><label for="difficulty_no_matter">상관없음</label>
+                </td>
+            </tr>
+            <tr>
+                <td>지역</td>
+                <td>
+                    <select name="location" id="location">
+                        <option id="default" value="00">선택안함</option>
+                        <option id="Seoul" value="서울특별시">서울특별시</option>
+                        <option id="Gyeonggi-do" value="경기도">경기도</option>
+                        <option id="Sejong" value="세종특별자치시">세종특별자치시</option>
+                        <option id="Busan" value="부산광역시">부산광역시</option>
+                        <option id="Incheon" value="인천광역시">인천광역시</option>
+                        <option id="Daegu" value="대구광역시">대구광역시</option>
+                        <option id="Daejeon" value="대전광역시">대전광역시</option>
+                        <option id="Gwangju" value="광주광역시">광주광역시</option>
+                        <option id="Ulsan" value="울산광역시">울산광역시</option>
+                        <option id="Gangwon-do" value="강원도">강원도</option>
+                        <option id="Chungcheongbuk-do" value="충청북도">충청북도</option>
+                        <option id="Chungcheongnam-do" value="충청남도">충청남도</option>
+                        <option id="Jeollabuk-do" value="전라북도">전라북도</option>
+                        <option id="Jeollanam-do" value="전라남도">전라남도</option>
+                        <option id="Gyeongsangbuk-do" value="경상북도">경상북도</option>
+                        <option id="Gyeongsangnam-do" value="경상남도">경상남도</option>
+                        <option id="Jeju-do" value="제주도">제주도</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>소요시간</td>
+                <td>
+                    <input type="radio" id="until_3hours" name="leadtime" value="2시간~2시간30분미만" checked="checked"><label for="until_3hours">2시간~2시간30분미만</label>
+                    <input type="radio" id="3hours_to_5hours" name="leadtime" value="3시간30분~4시간미만" ><label for="3hours_to_5hours">3시간30분~4시간미만</label>
+                    <input type="radio" id="over_5hours" name="leadtime" value="4시간~4시간30분미만" ><label for="over_5hours">4시간~4시간30분미만</label>
+                    <input type="radio" id="over_5hours" name="leadtime" value="4시간30분~5시간미만" ><label for="over_5hours">4시간30분~5시간미만</label>
+                    <input type="radio" id="over_5hours" name="leadtime" value="5시간이상" ><label for="over_5hours">5시간이상</label>
+                    <input type="radio" id="leadtime_no_matter" name="leadtime" value="no_matter" ><label for="leadtime_no_matter">상관없음</label>
+                </td>
+            </tr>
+            <tr>
+                <td>산이름</td>
+                <td>
+                    <input type="text" name="mtn_name"/>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="검색" />
+    </form>
+    <br/>
+    <!-- 검색조건 END -->
+
+    <!-- 검색결과 START -->
+    총 게시글: 100건(1/10)
+    <table>
         <tr>
-            <th>검색조건</th>
-            <th>구분</th>
-            <th>구분선택</th>
+            <td>관악산</td>
+            <td>민주지산</td>
+            <td>금정산</td>
         </tr>
         <tr>
-            <td>포함</td>
-            <td>난이도</td>
-            <td>
-                <input type="radio" id="Beginner"><label for="Beginner">초급</label>
-                <input type="radio" id="intermediate"><label for="intermediate">중급</label>
-                <input type="radio" id="advanced"><label for="advanced">고급</label>
-            </td>
+            <td>재약산</td>
+            <td>치악산</td>
+            <td>삼악산</td>
         </tr>
         <tr>
-            <td>제외</td>
-            <td>지역</td>
-            <td>Maria Anders1</td>
-        </tr>
-        <tr>
-            <td>포함</td>
-            <td>높이</td>
-            <td>Maria Anders2</td>
-        </tr>
-        <tr>
-            <td>포함</td>
-            <td>소요시간</td>
-            <td>Maria Anders3</td>
-        </tr>
-        <tr>
-            <td>포함</td>
-            <td>산이름</td>
-            <td>Maria Anders4</td>
+            <td>관악산</td>
+            <td>민주지산</td>
+            <td>금정산</td>
         </tr>
     </table>
+
+    <!-- 검색결과 END -->
+
+    <!-- 페이징 START -->
+    ◀  1   2   3   4   5   6   7   8   9   10 ▶
+    <!-- 페이징 END -->
     
 </body>
 </html>
