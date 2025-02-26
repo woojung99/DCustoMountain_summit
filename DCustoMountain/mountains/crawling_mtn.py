@@ -12,6 +12,7 @@ location_name_list = [] # 지역 이름 리스트
 leadtime_list = [] # 산행 기간 리스트
 mtn_height_list = [] # 산 높이 리스트
 mtn_difficulty_list = [] # 산 난이도 리스트
+mtn_img_list = [] # 산 사진주소 리스트
 
 class get_run_chrome_driver():
     def run_chrome_driver(url):
@@ -74,6 +75,26 @@ class get_info():
             mtn_difficulty_list.append(None)
         
         return location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
+    
+class getImg():
+    def imgs(driver, mtn_order):
+        mtn_title = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
+        mtn_title[mtn_order].click()
+        time.sleep(1)
+        soup = BeautifulSoup(driver.page_source, "lxml")
+        
+        defaltaddr = 'https://www.forest.go.kr'
+        tag = soup.select("div.ps-list a")
+        # 첫 번째 이미지의 주소
+        imgsrc = tag[0].find("img")
+        imgaddr = imgsrc.get("src")
+
+        if imgaddr != '':
+            mtn_img_list.append(defaltaddr + imgaddr)
+        else:
+            mtn_img_list.append(None)
+
+        return mtn_img_list
 
 
 url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
@@ -96,11 +117,14 @@ for urlpagenum in range(1,11):
         # 9: 산높이
         # 11: 산 난이도
         location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list = get_info.other_infos(driver, mtn_order)
+        mtn_img_list = getImg.imgs(driver, mtn_order)
+
 
 print(location_name_list)
 print(leadtime_list)
 print(mtn_height_list)
 print(mtn_difficulty_list)
+print(mtn_img_list)
 
 # 지역, 산행기간, 산높이, 산 난이도GET END
 #return mtn_name_list, location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
@@ -109,11 +133,11 @@ con = sqlite3.connect(r'C:\Users\ITSC\git\DCustoMountain_summit\DCustoMountain\d
 
 cur = con.cursor()
 
-sql_columns = f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime) values"""
-print(sql_columns)
+# sql_columns = f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image) values"""
+# print(sql_columns)
 
 for i in range(len(mtn_name_list)):
-    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime) values ('{location_name_list[i]}', '{mtn_name_list[i]}', '{mtn_height_list[i]}', '{mtn_difficulty_list[i]}', '{leadtime_list[i]}');""")
+    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image) values ('{location_name_list[i]}', '{mtn_name_list[i]}', '{mtn_height_list[i]}', '{mtn_difficulty_list[i]}', '{leadtime_list[i]}', '{mtn_img_list[i]}');""")
     con.commit()
 
 con.close()
