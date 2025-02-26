@@ -117,6 +117,10 @@ for urlpagenum in range(1,11):
         # 9: 산높이
         # 11: 산 난이도
         location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list = get_info.other_infos(driver, mtn_order)
+
+for urlpagenum in range(1,11):
+    for mtn_order in range(0,10):
+        driver = get_run_chrome_driver.run_chrome_driver(url1+f'{urlpagenum}'+urltail)
         mtn_img_list = getImg.imgs(driver, mtn_order)
 
 
