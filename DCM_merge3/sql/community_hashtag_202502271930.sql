@@ -1,0 +1,12 @@
+INSERT INTO community_hashtag (name) VALUES ('사과');
+INSERT INTO community_hashtag (name) VALUES ('바나나');
+INSERT INTO community_hashtag (name) VALUES ('구글');
+INSERT INTO community_hashtag (name) VALUES ('장고');
+INSERT INTO community_hashtag (name) VALUES ('계란');
+INSERT INTO community_hashtag (name) VALUES ('아이콘');
+INSERT INTO community_hashtag (name) VALUES ('당근');
+INSERT INTO community_hashtag (name) VALUES ('생선');
+INSERT INTO community_hashtag (name) VALUES ('산');
+INSERT INTO community_hashtag (name) VALUES ('사용자');
+INSERT INTO community_hashtag (name) VALUES ('주스');
+INSERT INTO community_hashtag (name) VALUES ('템플릿');
