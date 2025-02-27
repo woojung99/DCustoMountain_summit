@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>Add Calendar</title>
+    </head>
+    <body>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">저장</button>
+        </form>
+    </body>
+</html>

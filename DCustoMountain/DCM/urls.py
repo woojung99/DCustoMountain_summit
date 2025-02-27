@@ -19,8 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from DCM import views 
 
 urlpatterns = [
+    path("", views.main, name="main"), 
     path("admin/", admin.site.urls),
     path("mountains/", include("mountains.urls")),
     path("community/", include("community.urls")),

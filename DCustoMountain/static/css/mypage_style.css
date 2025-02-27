@@ -1,0 +1,81 @@
+#add_post {
+    padding: 20px 10px 10px 10px;
+  }
+  #add_post .add_post-header {
+    margin-bottom: 10px;
+  }
+  #add-post {
+    padding: 20px 10px 10px;
+  }
+  #add-post div {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  #add-post div:last-of-type {
+    border: none;
+  }
+  #add-post h1 {
+    margin-bottom: 20px;
+  }
+  #add-post label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: bold;
+  }
+  #add-post input, #add-post textarea {
+    border: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #add-post button {
+    color: #2B5035;
+    background-color: transparent;
+    border: 1px solid #2B5035;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 8px 55px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+  }
+  #add-post button:hover {
+    color: white;
+    background-color: #2B5035;
+  }
+
+.radio-group ul {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.radio-group li {
+  list-style-type: none;
+  display: inline-block;
+  padding-right: 10%;
+  width: auto;
+  margin-right: 0.5%;
+  padding-left: 0;
+  margin-left: 0;
+  margin: 1em 0;
+}
+
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+.pagination a {
+  padding: 8px 12px;
+  margin: 0 4px;
+  text-decoration: none;
+  color: white;
+  background-color: #17a2b8;
+  border-radius: 5px;
+}
+.pagination .current-page {
+  font-weight: bold;
+  padding: 8px 12px;
+  margin: 0 4px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+}

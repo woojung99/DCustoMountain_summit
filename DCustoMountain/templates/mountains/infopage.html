@@ -1,0 +1,118 @@
+{% extends 'mountains/base_mountains.html' %}
+
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-5 fw-bolder">Find Your Mountains</h1>
+        </div>
+    </div>
+</header>
+
+<section class="py-2">
+    <div class="container px-4 px-lg-5 mt-5">
+        <ul class="list-group list-group-flush">
+            <form method="GET">
+                <li class="list-group-item">
+                    <div class="small justify-content-between mt-2 mb-2">
+                        {{ form.location }}
+                    </div>
+                    <hr class="main-divider" />
+                    <div class="small justify-content-between mt-2 mb-2">
+                        {% for choice in form.difficuly %}
+                        {{ choice }} 
+                        {% endfor %}
+                    </div>
+                    <hr class="main-divider" />
+                    <div class="small justify-content-between mt-2 mb-2">
+                        {{ form.leadtime }}
+                    </div>
+                    <hr class="main-divider" />
+                    <div class="text-end justify-content-between mt-2 mb-2">
+                        <button type="submit" class="btn text-white" style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color:#206c34;">
+                            Search
+                        </button>
+                    </div>
+                </li>
+            </form>
+        </ul>
+    </div>
+</section>
+
+<!-- Section-->
+<section>
+    <div class="container px-4 px-lg-5 mt-5">
+        <div>
+            <p>총 게시글 : {{ page_obj.paginator.count }}건 ( {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} )</p>
+        </div>
+        <hr class="main-divider" />
+        {% if not mountains %}
+            <p>{{ message }}</p>
+        {% else %}
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for mountain in page_obj %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="{{ mountain.mtn_image.url }}" alt="" />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">{{ mountain.name }}</h5>
+                                    {{ mountain.location }}
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn text-white mt-auto" style="background-color:#206c34;"
+                                    href="{% url 'mountains:mountain_detail' mountain_id=mountain.id %}">View detail</a></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- 페이지네이션 시작 -->
+            <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% if page_obj.has_previous %}
+                        <div class="text-center justify-content-between">
+                            <button>
+                                <a class="text-black text-decoration-none" href="?page=1">
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </a>
+                            </button>
+                            <button>
+                                <a class="text-black text-decoration-none" href="?page={{ page_obj.previous_page_number }}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                            </button>
+                            <button>
+                                <a>{{ page_obj.number }}</a>
+                            </button>
+                        </div>
+                        {% elif page_obj.has_next %}
+                        <div class="text-center justify-content-between">
+                            <button>
+                                <a>{{ page_obj.number }}</a>
+                            </button>
+                            <button>
+                                <a class="text-black text-decoration-none" href="?page={{ page_obj.next_page_number }}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                            </button>
+                            <button>
+                                <a class="text-black text-decoration-none" href="?page={{ page_obj.paginator.num_pages }}">
+                                    <i class="fa-solid fa-angles-right"></i><a></a>
+                                </a>
+                            </button>
+                        </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        <!-- 페이지네이션 끝 -->
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

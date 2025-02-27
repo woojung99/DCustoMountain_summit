@@ -1,31 +1,42 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from mountains.forms import FilterForm
 from mountains.models import Mountain
-from django.urls import reverse
+from django.core.paginator import Paginator
 
-def filter(request):
+def infopage(request): 
     form = FilterForm(request.GET or None)
     mountains = Mountain.objects.all()
-    location = request.GET.get("location")
-    height = request.GET.get("height")
+    location = request.GET.get("location", None)
+    difficulty = request.GET.get("height", None)
+    leadtime = request.GET.get("leadtime", None)
     if location:
-        mountains = mountains.filter(location__icontains=location)
-    if height:
-        height = int(height) 
+        mountains = mountains.filter(location__contains=location)
+    if difficulty:
+        height = int(difficulty) 
         mountains = mountains.filter(height__gte=height - 500, height__lt=height) 
+    if leadtime: 
+        mountains = mountains.filter(leadtime=leadtime)
+    mountains = mountains.distinct() 
+
+    if not mountains.exists():
+        message = "검색 결과가 없습니다."
+    else:
+        message = None
+
+    # 페이지네이션 설정: 한 페이지에 9개씩
+    paginator = Paginator(mountains, 9)  # 한 페이지에 9개씩
+    page_number = request.GET.get('page')  # 페이지 번호
+    page_obj = paginator.get_page(page_number)
     context = {
         "form" : form, 
         "mountains" : mountains, 
+        "message": message,
+        "page_obj": page_obj,
     }
-    return render(request, "mountains/filter.html", context)
+    return render(request, "mountains/infopage.html", context)
 
-def experienced(request, mountain_id): 
-    mountain = Mountain.objects.get(id = mountain_id)
-    print(mountain) 
-    user = request.user 
-    if user.experienced_mountains.filter(id = mountain.id).exists(): 
-        user.experienced_mountains.remove(mountain) 
-    else: 
-        user.experienced_mountains.add(mountain) 
-    url_next = request.GET.get("next") or reverse("mountains:filter")
-    return redirect(url_next)
+def mountain_detail(request, mountain_id): 
+    mountain = get_object_or_404(Mountain, id = mountain_id) 
+    context = {"mountain" : mountain}
+    return render(request, "mountains/mountain_detail.html", context)
+

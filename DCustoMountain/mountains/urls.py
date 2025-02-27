@@ -3,6 +3,6 @@ from mountains import views
 
 app_name = "mountains"
 urlpatterns = [
-    path("filter/", views.filter, name="filter"), 
-    path("<int:mountain_id>/experienced/", views.experienced, name="experienced"), 
+    path("infopage/", views.infopage, name="infopage"), 
+    path("<int:mountain_id>/", views.mountain_detail, name="mountain_detail"), 
 ]

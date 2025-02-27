@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from users.forms import LoginForm, SignupForm, ProfileForm 
 from users.models import User 
-from mountains.models import Mountain
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required 
 from django.urls import reverse
+from cal.utils import Calendar 
+from cal.models import Event 
+from mountains.forms import FilterForm 
+from mountains.models import Mountain
 
 # Create your views here.
 def login_view(request): 
@@ -49,8 +51,19 @@ def signup(request):
     
 def mypage(request, user_id): 
     user = get_object_or_404(User, id = user_id)
+    if not request.user.is_authenticated: 
+        return redirect("users:login")
+    elif user != request.user: 
+        url_next = request.GET.get("next") or reverse("users:mypage", args=[request.user.id])
+        return redirect(url_next)
+    user_events = Event.objects.filter(user=request.user)
+    cal = Calendar() 
+    total_distance = cal.total_distance(contents=user_events) 
+    total_duration = cal.total_duration(contents=user_events) 
     context = {
         "user" : user, 
+        "total_distance" : total_distance, 
+        "total_duration" : total_duration, 
     }
     return render(request, "users/mypage.html", context)
 
@@ -62,7 +75,6 @@ def profile(request, user_id):
     }
     return render(request, "users/profile.html", context)
 
-@login_required 
 def edit_profile(request, user_id): 
     if request.method == "POST": 
         form = ProfileForm(request.POST, request.FILES, instance=request.user) 
@@ -77,7 +89,7 @@ def edit_profile(request, user_id):
 def like_list(request): 
     user = request.user
     posts = user.like_posts.all() 
-    context = {
+    context = { 
         "posts" : posts, 
     }
     return render(request, "users/like_list.html", context)
@@ -118,6 +130,11 @@ def following(request, user_id):
     }
     return render(request, "users/following.html", context)
 
+def short_description(request, user_id): 
+    user = get_object_or_404(User, id = user_id)
+    context = {"user" : user}
+    return render(request, "users/short_description.html", context)
+
 def follow(request, user_id):
     user = request.user
     target_user = get_object_or_404(User, id = user_id)
@@ -128,10 +145,99 @@ def follow(request, user_id):
     url_next = request.GET.get("next") or reverse("users:profile", args=[user.id])
     return redirect(url_next)
 
-@login_required 
+# def follow_me(request, target_user_id): 
+#     user = request.user 
+#     target_user = get_object_or_404(User, id = target_user_id)
+#     if user in target_user.following.all(): 
+#         target_user.following.remove(user) 
+#     return redirect(reverse("users:followers", args=[user.id]))
+
 def report_user(request, user_id): 
     reported_user = get_object_or_404(User, id = user_id)
     reported_user.report_user() 
     messages.success(request, f"{reported_user.username} 님을 신고했습니다.")
     return redirect("users:profile", user_id=user_id)
 
+def experienced(request, mountain_id): 
+    mountain = Mountain.objects.get(id = mountain_id)
+    user = request.user 
+    if user.experienced_mountains.filter(id = mountain.id).exists(): 
+        user.experienced_mountains.remove(mountain) 
+    else: 
+        user.experienced_mountains.add(mountain) 
+    url_next = request.GET.get("next") or reverse("mountains:filter")
+    return redirect(url_next)
+
+def wish(request, mountain_id): 
+    mountain = Mountain.objects.get(id = mountain_id)
+    user = request.user 
+    if user.wish_mountains.filter(id = mountain.id).exists(): 
+        user.wish_mountains.remove(mountain) 
+    else: 
+        user.wish_mountains.add(mountain) 
+    url_next = request.GET.get("next") or reverse("mountains:filter")
+    return redirect(url_next)
+
+def experienced_list(request): 
+    user = request.user 
+    mountains = user.experienced_mountains.all() 
+    context = {
+        "mountains" : mountains, 
+    }
+    return render(request, "users/experienced_list.html", context)
+
+def wish_list(request): 
+    user = request.user 
+    mountains = user.wish_mountains.all() 
+    context = {
+        "mountains" : mountains, 
+    }
+    return render(request, "users/wish_list.html", context)
+
+def add_experienced(request):
+    form = FilterForm(request.GET or None)
+    mountains = Mountain.objects.all()
+    location = request.GET.get("location", None)
+    difficulty = request.GET.get("height", None)
+    leadtime = request.GET.get("leadtime", None)
+    if location:
+        mountains = mountains.filter(location__contains=location)
+    if difficulty:
+        height = int(difficulty) 
+        mountains = mountains.filter(height__gte=height - 500, height__lt=height) 
+    if leadtime: 
+        mountains = mountains.filter(leadtime=leadtime)
+    context = {
+        "form" : form, 
+        "mountains" : mountains, 
+    }
+    return render(request, "users/add_experienced.html", context)
+
+def add_wish(request):
+    form = FilterForm(request.GET or None)
+    mountains = Mountain.objects.all()
+    location = request.GET.get("location", None)
+    difficulty = request.GET.get("height", None)
+    leadtime = request.GET.get("leadtime", None)
+    if location:
+        mountains = mountains.filter(location__contains=location)
+    if difficulty:
+        height = int(difficulty) 
+        mountains = mountains.filter(height__gte=height - 500, height__lt=height) 
+    if leadtime: 
+        mountains = mountains.filter(leadtime=leadtime)
+    context = {
+        "form" : form, 
+        "mountains" : mountains, 
+    }
+    return render(request, "users/add_wish.html", context)
+
+def distance_list(request): 
+    user_events = Event.objects.filter(user=request.user).order_by('-hikedate')
+    context = {"user_events" : user_events}
+    return render(request, "users/distance_list.html", context)
+
+def duration_list(request): 
+    user_events = Event.objects.filter(user=request.user).order_by('-hikedate')
+    context = {"user_events" : user_events}
+    return render(request, "users/duration_list.html", context)

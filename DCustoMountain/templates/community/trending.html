@@ -1,0 +1,28 @@
+{% extends 'community/base/base_nav.html' %}
+
+{% block content %}
+    <div id="trending">
+        <header class="trending-header text-center">
+            <h1>TRENDING</h1>
+            <h5> The 5 Most Liked Posts </h5>
+        </header>
+        <hr/>
+        <div class="post-grid-container">
+            {% if top5_list %}
+                {% for post in top5_list%}
+                    <!-- Post에 연결된 PostImage가 있으며 -->
+                    <!-- 연결된 첫 번째 PostImage의 photo가 비어있지 않은 경우 -->
+                    {% if post.postimage_set.first and post.postimage_set.first.photo %}
+                    <div class="post-grid">
+                        <a href="{% url 'community:post_detail' post_id=post.id %}">
+                            <img src="{{ post.postimage_set.first.photo.url }}" alt="">
+                        </a>
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    <p>검색된 게시물이 없습니다</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

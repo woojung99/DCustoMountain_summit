@@ -1,0 +1,36 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <div class="text-start text-black mt-3">
+            <a class="small text-decoration-none" href="{% url 'users:mypage' user_id=user.id %}">
+                <div class="text-secondary"><i class="fa-solid fa-arrow-left"></i> Back</div>
+            </a>
+        </div>
+        <hr class="main-divider" />
+        <h1 class="mt-4">Distance Records</h1>
+        <hr class="main-divider" />
+        <ul class="list-group list-group-flush">
+            {% for event in user_events %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-center justify-content-between mt-2 mb-2">
+                    <div>
+                        {{ event.hikedate }}
+                    </div>
+                    <div>
+                        {{ event.distance }} km
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active ms-4">등산 거리 기록이 없습니다.</li>
+                </ol>
+            {% endfor %}
+        </ul>
+    </div>
+</main>
+
+{% endblock %}

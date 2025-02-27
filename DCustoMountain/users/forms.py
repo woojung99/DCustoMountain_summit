@@ -18,7 +18,7 @@ class SignupForm(forms.Form):
     username = forms.CharField()
     password1 = forms.CharField(widget = forms.PasswordInput)
     password2 = forms.CharField(widget = forms.PasswordInput)
-    profile_image = forms.ImageField()
+    profile_image = forms.ImageField(required=False)
     short_description = forms.CharField()
     def clean_username(self):
         username = self.cleaned_data["username"]

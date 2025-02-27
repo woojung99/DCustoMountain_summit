@@ -1,0 +1,46 @@
+{% extends 'community/base/base_nav.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="search_results">
+        <header class="search_results-header text-center">
+            <h1>SEARCH RESULTS</h1>
+            <h5>Keyword: {{ search_string }}</h5>
+        </header>
+        <hr/>
+        {% if target_users %}
+            <div class="container" id="my_info_profile">
+                {% for target_user in target_users %}
+                    <a class= "text-decoration-none" href="{% url 'users:profile' user_id=target_user.id %}">
+                        {% if target_user.profile_image %}
+                            <img src = "{{ target_user.profile_image.url }}" class="rounded-circle" width=60 alt="image">
+                        {% else %}
+                            <img src = "{% static 'users/profile/none.png' %}" class="rounded-circle" width=60 alt="none">
+                        {% endif %}
+                        <span class="text-dark fw-bolder">{{ target_user.username }}</span>
+                    </a>
+                    <hr/>
+                {% empty %}
+                    <p>검색된 계정이 없습니다</p>
+                {% endfor %}
+            </div>
+        {% elif posts %}
+            <div class="post-grid-container">
+                {% for post in posts %}
+                    <!-- Post에 연결된 PostImage가 있으며 -->
+                    <!-- 연결된 첫 번째 PostImage의 photo가 비어있지 않은 경우 -->
+                    {% if post.postimage_set.first and post.postimage_set.first.photo %}
+                        <div class="post-grid">
+                            <a href="{% url 'community:post_detail' post_id=post.id %}">
+                                <img src="{{ post.postimage_set.first.photo.url }}" alt="image">
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% empty %}
+                        <p>검색된 게시물이 없습니다</p>
+                {% endfor %}
+            </div>
+        {% endif %}    
+    </div>
+{% endblock %}
+        

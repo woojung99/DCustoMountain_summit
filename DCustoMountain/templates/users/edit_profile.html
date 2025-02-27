@@ -1,13 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'users/base_users.html' %}
 
 {% block content %}
-    <div id="signup">
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Edit Profile</h1>
+        <hr class="main-divider" />
         <form method="POST" enctype="multipart/form-data">
-            <h1>Pystagram</h1>
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-signup">저장</button>
-            <a href="{% url 'users:profile' user_id=request.user.id %}">취소</a>
+            <li class="list-group-item">
+                <div class="small justify-content-between mt-2 mb-2">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-signup">저장</button>
+                    <a href="{% url 'users:profile' user_id=request.user.id %}">취소</a>
+                </div>
+            </li>
         </form>
     </div>
+</main>
+
 {% endblock %}
