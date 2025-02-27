@@ -151,6 +151,7 @@ print(leadtime_list)
 print(mtn_height_list)
 print(mtn_difficulty_list)
 print(mtn_img_list)
+print(detail_info_list)
 
 # 지역, 산행기간, 산높이, 산 난이도GET END
 #return mtn_name_list, location_name_list, leadtime_list, mtn_height_list, mtn_difficulty_list
@@ -163,7 +164,7 @@ cur = con.cursor()
 # print(sql_columns)
 
 for i in range(len(mtn_name_list)):
-    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image) values ('{location_name_list[i]}', '{mtn_name_list[i]}', '{mtn_height_list[i]}', '{mtn_difficulty_list[i]}', '{leadtime_list[i]}', '{mtn_img_list[i]}');""")
+    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image, detail_info) values ('{location_name_list[i]}', '{mtn_name_list[i]}', '{mtn_height_list[i]}', '{mtn_difficulty_list[i]}', '{leadtime_list[i]}', '{mtn_img_list[i]}', '{detail_info_list[i]}');""")
     con.commit()
 
 con.close()
