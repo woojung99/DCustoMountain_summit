@@ -105,7 +105,7 @@ class get_detail_info():
         soup = BeautifulSoup(driver.page_source, "lxml")
         tag = soup.select("div#txt p")
 
-        if tag != '':
+        if len(tag) > 1:
             detail_info_list.append(tag[1].text)
         else:
             detail_info_list.append('')
