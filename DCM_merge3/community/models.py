@@ -19,8 +19,9 @@ class Post(models.Model):
     def report_post(self): 
         self.report_count += 1 
         if self.report_count >= 3: 
-            self.remove()
-        self.save()
+            self.delete()
+        else:
+            self.save()
     
     def cancel_report_post(self):
         self.report_count -= 1

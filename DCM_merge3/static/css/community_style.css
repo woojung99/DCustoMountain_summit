@@ -3,20 +3,193 @@
     height: auto;
   }
 
-  div.card div.card-header a {
+ #post_profile a {
     display: flex;
     width: 100%;
     flex-direction: row;
     align-items: center;
   }
-  div.card div.card-header img {
-    height: 40px;
+  #post_profile img {
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #222529;
+    box-sizing: border-box;
+    margin-right: 10px;
+  }
+  #post_profile span {
+    font-weight: bold;
+    margin-right: auto;
+  }
+
+
+  #my_info_profile a {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+  }
+  #my_info_profile img {
+    height: 60px;
     border-radius: 50%;
     border: 1px solid #eee;
     box-sizing: border-box;
     margin-right: 10px;
   }
-  div.card div.card-header span {
+  #my_info_profile span {
     font-weight: bold;
     margin-right: auto;
+  }
+
+  #comment_profile a {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+  }
+  #comment_profile img {
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    margin-right: 10px;
+  }
+  #comment_profile span {
+    font-weight: bold;
+    margin-right: auto;
+  }
+
+  .post-grid-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .post-grid-container .post-grid {
+    display: flex;
+    aspect-ratio: 1/1;
+    width: calc((100vw - (100vw - 100%)) * 0.32);
+    margin-right: calc((100vw - (100vw - 100%)) * 0.02);
+    margin-bottom: 2vw;
+    background-color: #eee;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .post-grid-container .post-grid:nth-of-type(3n) {
+    margin-right: 0;
+  }
+  .post-grid-container .post-grid a {
+    display: flex;
+  }
+  .post-grid-container .post-grid img {
+    min-width: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  #trending {
+    padding: 20px 10px 10px 10px;
+  }
+  #trending .trending-header {
+    margin-bottom: 10px;
+  }
+
+  #search_results {
+    padding: 20px 10px 10px 10px;
+  }
+  #search_results .search_results-header {
+    margin-bottom: 10px;
+  }
+
+  #tags {
+    padding: 20px 10px 10px 10px;
+  }
+  #tags .tags-header {
+    margin-bottom: 10px;
+  }
+
+  #add_post {
+    padding: 20px 10px 10px 10px;
+  }
+  #add_post .add_post-header {
+    margin-bottom: 10px;
+  }
+
+  #add-post {
+    padding: 20px 10px 10px;
+  }
+  #add-post div {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  #add-post div:last-of-type {
+    border: none;
+  }
+  #add-post h1 {
+    margin-bottom: 20px;
+  }
+  #add-post label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: bold;
+  }
+  #add-post input, #add-post textarea {
+    border: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #add-post button {
+    color: #206c34;
+    background-color: transparent;
+    border: 1px solid #206c34;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 8px 55px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+  }
+  #add-post button:hover {
+    color: white;
+    background-color: #206c34;
+  }
+
+  #add-comment input, #add-comment textarea {
+    border: 1px solid #ddd;
+    width: 100%;
+    height: 3em;
+    box-sizing: border-box;
+  }
+  #add-comment button {
+    color: #206c34;
+    background-color: transparent;
+    border: 1px solid #206c34;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+  }
+  #add-comment button:hover {
+    color: white;
+    background-color: #206c34;
+  }
+
+  #edit-comment input, #edit-comment textarea {
+    border: 1px solid #ddd;
+    width: 100%;
+    height: 3em;
+    box-sizing: border-box;
+  }
+  #edit-comment button {
+    color: #206c34;
+    background-color: transparent;
+    border: 1px solid #206c34;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+  }
+  #edit-comment button:hover {
+    color: white;
+    background-color: #206c34;
   }

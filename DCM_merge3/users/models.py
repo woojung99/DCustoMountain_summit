@@ -58,7 +58,8 @@ class User(AbstractUser):
         self.report_count += 1 
         if self.report_count >= 5: 
             self.block_flag = True
-        self.save() 
+        else:
+            self.save() 
     
     def cancel_report_user(self):
         self.report_count -= 1

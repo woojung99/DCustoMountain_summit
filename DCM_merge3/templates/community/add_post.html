@@ -1,25 +1,33 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ko">
-    <head>
-        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <title>Add Post</title>
-    </head>
-    <body>
-        <h3>게시글 작성</h3>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div>
-                <label for="id_images">이미지</label>
-                <input id="id_images" name="images" type="file" multiple>
+{% extends 'community/base/base_nav.html' %}
+
+{% block content %}
+    <div id="add_post">
+        <header class="search_results-header text-center">
+            <h1>ADD POST</h1>
+        </header>
+        <hr/>
+        <div id="add-post">
+            <div class="container">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_images"><i class="fa-regular fa-image"></i> 이미지</label>
+                        <input id="id_images" name="images" type="file" required="required" multiple>
+                    </div>
+                    <div>
+                        <label><i class="fa-regular fa-file"></i> 내용</label>
+                        {{ form.content }}
+                    </div>
+                    <div>
+                        <label for="id_tags"><i class="fa-solid fa-hashtag"></i> 해시태그</label>
+                        <input id="id_tags" name="tags" type="text"
+                            placeholder="쉼표(,)로 구분하여 여러 태그 입력">
+                    </div>
+                    <div class="text-end">
+                        <button type="submit">게시</button>
+                    </div>
+                </form>
             </div>
-            {{ form.as_p }}
-            <div>
-                <label for="id_tags">해시태그</label>
-                <input id="id_tags" name="tags" type="text" 
-                    placeholder="쉼표(,)로 구분하여 여러 태그 입력">
-            </div>
-            <button type="submit">게시</button>
-        </form>    
-    </body>
-</html>
+        </div>   
+    </div> 
+{% endblock %}

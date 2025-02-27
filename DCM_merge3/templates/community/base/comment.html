@@ -1,0 +1,28 @@
+<div class="card-body flex-shrink-0" id="comment-{{ comment.id }}">
+    <div class="row">
+        <div class="col-md-3" id="comment_profile">
+            <a class="text-decoration-none" href="{% url 'users:profile' user_id=comment.user.id %}">
+            {% if comment.user.profile_image %}
+                <img src="{{ comment.user.profile_image.url }}" class="rounded-circle" width="50" alt="image" />
+            {% else %}
+                <img src="https://blog.kakaocdn.net/dn/bheSYb/btrCNNwtkUv/WBdKVM4VjGlodkWRVcezKK/img.jpg" class="rounded-circle" width="50" alt="none" />
+            {% endif %}
+            <span class="fw-bold text-dark">{{ comment.user.username }}</span>
+            </a>
+        </div>
+        <div class="col-md-9 mt-3">
+            {{ comment.content }}
+            {% if user == comment.user %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'community:edit_comment' comment_id=comment.id %}">
+                        <button class="badge text-decoration-none link-light" type="submit" style="background-color:#206c34;"><i class="fa-regular fa-pen-to-square"></i> edit</button>
+                    </a>
+                    <form method="POST" action="{% url 'community:delete_comment' comment_id=comment.id %}">
+                        {% csrf_token %}
+                        <button class="badge text-decoration-none link-light" type="submit" style="background-color:#206c34;"><i class="fa-regular fa-trash-can"></i> delete</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

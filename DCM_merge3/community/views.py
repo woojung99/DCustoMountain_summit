@@ -16,7 +16,7 @@ def feeds(request):
         return redirect("users:login")
     
     # 모든 게시글 목록과 빈 댓글폼을 템플릿으로 전달
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-created_at")
     comment_form = CommentForm()
     context = {
         "posts":posts,
@@ -28,6 +28,7 @@ def post_detail(request, post_id):
     # url 로 받은 post_id 로 post 객체 찾음
     post = Post.objects.get(id=post_id)
     comment_form = CommentForm()
+
     context = {
         "post":post,
         "comment_form":comment_form,
@@ -50,7 +51,6 @@ def add_post(request):
                     post=post,
                     photo=image_file,
                 )
-                print(image_file)
             
             # 문자열로 전달된 해시태그들로 Hashtag 객체 생성하고 post 객체에 추가
             tag_string = request.POST.get("tags")
@@ -77,15 +77,34 @@ def edit_post(request, post_id):
     if request.method == "POST":
         # 요청을 보내온 유저가 게시글을 작성한 유저와 같을 때만 수행
         if post.user == request.user:
-            # POST 요청내용과 수정할 타겟 객체를 인수로 담아 포스트폼 할당
+            # POST 요청내용과 수정할 타겟 객체를 인수로 담아 포스트폼 할당 (content 수정정)
             form = PostForm(request.POST, instance=post)
             if form.is_valid():
                 edited_post = form.save()
+                # 기존의 이미지 파일들 모두 삭제 후 새롭게 받아온 파일 넣기
+                for image_file in PostImage.objects.filter(post=edited_post):
+                    image_file.delete()
+                for image_file in request.FILES.getlist("images"):
+                    PostImage.objects.create(
+                        post=edited_post,
+                        photo=image_file,
+                    )
+                # 기존의 tags를 지우고 새로 추가하는 방식
+                edited_post.tags.clear()
+                tag_string = request.POST.get("tags")
+                if tag_string:
+                    tag_name_list = [tag_name.strip() for tag_name in tag_string.split(",")]
+                    for tag_name in tag_name_list:
+                        tag, _ = Hashtag.objects.get_or_create(
+                            name=tag_name,
+                        )
+                        edited_post.tags.add(tag)
                 return redirect(reverse("community:post_detail", kwargs={"post_id":edited_post.id}))
         else:
             return HttpResponseForbidden("이 게시글을 수정할 권한이 없습니다.")
     else:
         form = PostForm(instance=post)
+        tags = post.tags
 
 
     context = {
@@ -197,17 +216,15 @@ def report_post(request, post_id):
         post.cancel_report_post()
         reported_user.cancel_report_user()
         messages.success(request, f"{reported_user.username} 님의 게시글의 신고를 취소하였습니다.")
-        print(post.report_count)
-        print(reported_user.report_count)
 
     else:
         user.report_posts.add(post)
         post.report_post()
         reported_user.report_user()
         messages.success(request, f"{reported_user.username} 님의 게시글을 신고하였습니다.")
-        print(post.report_count)
-        print(reported_user.report_count)
-
+        if not Post.objects.filter(id=post.id).exists():
+            return redirect(reverse("community:feeds"))
+        
     url = reverse("community:feeds") + f"#post-{post.id}"
     return redirect(url)
 
@@ -216,10 +233,10 @@ def search_results(request):
     if search_string:
         if search_string[0] == "@":
             user_name = search_string[1:].strip()
-            target_user = User.objects.get(username=user_name)
+            target_users = User.objects.filter(username__contains = user_name)
             context = {
                 "search_string":search_string,
-                "target_user":target_user,
+                "target_users":target_users,
             } 
         elif search_string[0] == "#":
             tag_name = search_string[1:].strip()

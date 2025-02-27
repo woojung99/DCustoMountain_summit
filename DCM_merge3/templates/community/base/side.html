@@ -1,0 +1,56 @@
+<!-- Side widgets-->
+<div class="col-md-4 col-lg-3">
+    <!-- myinfo widget-->
+    <div class="card mb-4">
+        <div class="card-header bg-dark">
+            <div class= text-light><i class="fa-solid fa-house"></i> My Information</div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-7" id="my_info_profile">
+                    <a class= "text-decoration-none" href="{% url 'users:profile' user_id=user.id %}">
+                        {% if user.profile_image %}
+                            <img src = "{{ user.profile_image.url }}" class="rounded-circle" width=60 alt="image">
+                        {% else %}
+                            <img src="https://blog.kakaocdn.net/dn/bheSYb/btrCNNwtkUv/WBdKVM4VjGlodkWRVcezKK/img.jpg" class="rounded-circle" width="60" alt="none">
+                        {% endif %}
+                        <span class="text-dark fw-bolder">{{ user.username }}</span>
+                    </a>
+                </div>
+                <div class="col-5 mt-5">
+                    <a class="nav-link text-end" href="{% url 'users:mypage' user_id=user.id %}">
+                        <div class="sb-nav-link-icon text-muted fs-6"><i class="fa-regular fa-address-book"></i> My Page</i></div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Search widget-->
+    <div class="card mb-4">
+        <div class="card-header bg-dark">
+            <div class= text-light><i class="fa-solid fa-magnifying-glass"></i> Search</div>
+        </div>
+        <div class="card-body">
+            <div class="input-group">
+                <form method="GET" action="{% url 'community:search_results' %}">
+                    <div class="row">
+                        <div class="col-8">
+                            <input name="search_string" class="form-control" type="text" placeholder="검색어 입력..." aria-label="검색어 입력..." aria-describedby="button-search" />
+                        </div>
+                        <div class="col-4">
+                            <button class="btn text-white" id="button-search" type="submit" style="background-color:#206c34;">Enter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <hr/>
+                <span class="font-weight-light"><i class="fa-solid fa-check"></i> 검색 방법</span>
+                <li class="small font-weight-light">게시글 검색은 키워드</li>
+                <li class="small font-weight-light">계정 검색은 @계정명</li>
+                <li class="small font-weight-light">해시태그 검색은 #해시태그명</li>
+            </div>
+        </div>
+    </div>
+</div>
