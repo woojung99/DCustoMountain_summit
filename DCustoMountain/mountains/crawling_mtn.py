@@ -13,6 +13,7 @@ leadtime_list = [] # 산행 기간 리스트
 mtn_height_list = [] # 산 높이 리스트
 mtn_difficulty_list = [] # 산 난이도 리스트
 mtn_img_list = [] # 산 사진주소 리스트
+detail_info_list = [] # 상세정보 리스트
 
 class get_run_chrome_driver():
     def run_chrome_driver(url):
@@ -95,6 +96,22 @@ class getImg():
             mtn_img_list.append('')
 
         return mtn_img_list
+    
+class get_detail_info():
+    def detail_info(driver, mtn_order):
+        mtn_title = driver.find_elements(By.CSS_SELECTOR, "ul.lst_thumb a")
+        mtn_title[mtn_order].click()
+        time.sleep(1)
+        soup = BeautifulSoup(driver.page_source, "lxml")
+        tag = soup.select("div#txt p")
+
+        if tag != '':
+            detail_info_list.append(tag[1].text)
+        else:
+            detail_info_list.append('')
+
+        return detail_info_list
+
 
 
 url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
@@ -122,6 +139,11 @@ for urlpagenum in range(1,11):
     for mtn_order in range(0,10):
         driver = get_run_chrome_driver.run_chrome_driver(url1+f'{urlpagenum}'+urltail)
         mtn_img_list = getImg.imgs(driver, mtn_order)
+
+for urlpagenum in range(1,11):
+    for mtn_order in range(0,10):
+        driver = get_run_chrome_driver.run_chrome_driver(url1+f'{urlpagenum}'+urltail)
+        detail_info_list = get_detail_info.detail_info(driver, mtn_order)
 
 
 print(location_name_list)

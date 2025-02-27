@@ -8,6 +8,8 @@ class Mountain(models.Model):
     mtn_difficulty = models.CharField(max_length=100, null=True) # 난이도
     leadtime = models.CharField(max_length=100, null=True) # 소요시간
     mtn_image = models.CharField(max_length=500, null=True) # 이미지주소
+    detail_info = models.CharField(max_length=10000, null=True)
+
 
     def __str__(self):
         return self.name
