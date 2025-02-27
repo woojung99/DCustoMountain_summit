@@ -3,12 +3,13 @@ import datetime
 
 # Create your models here.
 class Mountain(models.Model):
-    name = models.CharField(max_length=50) 
-    location = models.CharField(max_length=100) 
-    height = models.FloatField() 
-    leadtime = models.CharField(max_length=50, blank=True) 
-    mtn_image = models.ImageField(upload_to="mountains/image/", blank=True)
-    detail_info = models.TextField(blank=True) 
+    name = models.CharField(max_length=50) # 산이름
+    location = models.CharField(max_length=100, null=True) # 지역
+    height = models.CharField(max_length=100, null=True) # 산높이
+    mtn_difficulty = models.CharField(max_length=100, null=True) # 난이도
+    leadtime = models.CharField(max_length=100, null=True) # 소요시간
+    mtn_image = models.CharField(max_length=500, null=True) # 이미지주소
+    detail_info = models.TextField(max_length=10000, null=True)
 
     def __str__(self):
         return self.name 
