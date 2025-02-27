@@ -1,0 +1,19 @@
+{% extends 'community/base/_base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'splide/splide.css' %}">
+    <script src="{% static 'splide/splide.js' %}"></script>
+{% endblock %}
+
+{% block base_content %}
+    {% include 'community/base/nav.html' %}
+    {% block content %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        const elms = document.getElementsByClassName('splide')
+        for (let i = 0; i < elms.length; i++) {
+            new Splide(elms[i]).mount();
+        }
+    </script>
+{% endblock %}
