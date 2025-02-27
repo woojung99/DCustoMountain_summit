@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import time
 import sqlite3
+import re
 
 mtn_name_list = [] # 산 이름 리스트
 
@@ -112,6 +113,12 @@ class get_detail_info():
 
         return detail_info_list
 
+def clean_text(text):
+    if text:
+        text = text.replace("'", "''")  # 작은따옴표 이스케이프
+        text = text.replace('"', '""')  # 큰따옴표 이스케이프
+        text = re.sub(r'\s+', ' ', text)  # 공백, 줄바꿈 정리
+    return text or ""
 
 
 url1 = "https://www.forest.go.kr/kfsweb/kfi/kfs/foreston/main/contents/FmmntSrch/selectFmmntSrchList.do?mntIndex="
@@ -164,7 +171,7 @@ cur = con.cursor()
 # print(sql_columns)
 
 for i in range(len(mtn_name_list)):
-    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image, detail_info) values ('{location_name_list[i]}', '{mtn_name_list[i]}', '{mtn_height_list[i]}', '{mtn_difficulty_list[i]}', '{leadtime_list[i]}', '{mtn_img_list[i]}', '{detail_info_list[i]}');""")
+    cur.execute(f"""INSERT INTO mountains_mountain(location,name,height,mtn_difficulty,leadtime,mtn_image, detail_info) values ('{clean_text(location_name_list[i])}', '{clean_text(mtn_name_list[i])}', '{clean_text(mtn_height_list[i])}', '{clean_text(mtn_difficulty_list[i])}', '{clean_text(leadtime_list[i])}', '{clean_text(mtn_img_list[i])}', '{clean_text(detail_info_list[i])}');""")
     con.commit()
 
 con.close()
