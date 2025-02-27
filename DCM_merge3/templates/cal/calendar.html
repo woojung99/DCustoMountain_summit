@@ -1,0 +1,47 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Calendar</h1>
+        <hr class="main-divider" />
+        <figure class="text-end text-secondary">
+            <a class="small text-decoration-none" href="{% url 'cal:add_event' %}">
+                <div class="text-secondary"><i class="fa-solid fa-plus"></i> Add Event</div>
+            </a>
+        </figure>
+        <div class="row">
+            <div class="col-xl-4 col-md-4">
+                <figure class="text-secondary ms-2">
+                    <a class="small text-decoration-none" href="{% url 'cal:calendar' %}?{{ prev_month }}">
+                        <div class="text-secondary"><i class="fas fa-angle-left"></i></div>
+                    </a>
+                </figure>
+            </div>
+            <div class="col-xl-4 col-md-4 text-center">
+                <figure class="text-secondary">
+                    <a class="small text-decoration-none" href="{% url 'cal:calendar' %}">
+                        <button type="button" class="btn text-white" style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color:#206c34;">
+                                Today 
+                        </button>
+                    </a>
+                </figure>
+            </div>
+            <div class="col-xl-4 col-md-4 text-end">
+                <figure class="text-end text-secondary me-2">
+                    <a class="small text-decoration-none" href="{% url 'cal:calendar' %}?{{ next_month }}">
+                        <div class="text-secondary"><i class="fas fa-angle-right"></i></div>
+                    </a>
+                </figure>
+            </div>
+        </div>
+        <section>
+            {{ calendar }}
+        </section>
+        <br>
+        <br>
+    </div>
+</main>
+
+{% endblock %}

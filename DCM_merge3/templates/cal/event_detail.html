@@ -1,0 +1,43 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <div class="text-start text-black mt-3">
+            <a class="small text-decoration-none" href="{% url 'cal:back_calendar' event_id=event.id %}">
+                <div class="text-secondary"><i class="fa-solid fa-arrow-left"></i> Back</div>
+            </a>
+        </div>
+        <hr class="main-divider" />
+        <h1 class="mt-4">Event detail</h1>
+        <hr class="main-divider" />
+        <figure class="text-end text-secondary">
+            <a class="small text-decoration-none" href="{% url 'cal:edit_event' event_id=event.id %}">
+                <div class="text-secondary"><i class="fa-solid fa-pen-to-square"></i> Edit event</div>
+            </a>
+            <a class="small text-decoration-none" href="{% url 'cal:delete_event' event_id=event.id %}">
+                <div class="text-secondary"><i class="fa-solid fa-trash"></i> Delete event</div>
+            </a>
+        </figure>
+        <div class="card mb-4">
+            <div class="card-header">
+                <dt>{{ event.mountain.name }}</dt>
+            </div>
+            <div class="card-body small">
+                날짜 : {{ event.hikedate }}
+            </div>
+            <div class="card-body small">
+                등산 거리 : {{ event.distance }} km
+            </div>
+            <div class="card-body small">
+                소요 시간 : {{ event.duration }}
+            </div>
+            <div class="card-body small">
+                메모 : {{ event.memo }}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

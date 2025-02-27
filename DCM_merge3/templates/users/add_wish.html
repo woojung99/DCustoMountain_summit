@@ -1,0 +1,72 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <div class="text-end text-black mt-3">
+            <a class="small text-decoration-none" href="{% url 'users:wish_list' %}">
+                <div class="text-secondary"><i class="fa-solid fa-xmark"></i> Done</div>
+            </a>
+        </div>
+        <hr class="main-divider" />
+        <h1 class="mt-4">Add Mountains</h1>
+        <hr class="main-divider" />
+        <section class="py-2">
+            <div class="container px-4 px-lg-5">
+                <ul class="list-group list-group-flush">
+                    <form method="GET">
+                        <li class="list-group-item">
+                            <div class="small justify-content-between mt-2 mb-2">
+                                {{ form.location }}
+                            </div>
+                            <hr class="main-divider" />
+                            <div class="small justify-content-between mt-2 mb-2">
+                                {% for choice in form.difficulty %}
+                                {{ choice }} 
+                                {% endfor %}
+                            </div>
+                            <hr class="main-divider" />
+                            <div class="small justify-content-between mt-2 mb-2">
+                                {{ form.leadtime }}
+                            </div>
+                            <hr class="main-divider" />
+                            <div class="small text-end justify-content-between mt-2 mb-2">
+                                <button type="submit">Search</button>
+                            </div>
+                        </li>
+                    </form>
+                </ul>
+            </div>
+        </section>
+        <ul class="list-group list-group-flush">
+            {% for mountain in mountains %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-center justify-content-between mt-3 mb-3">
+                    <div>
+                        {{ mountain.name }} - {{ mountain.location }} ({{ mountain.height }}m)
+                    </div>
+                    <div>
+                        <form action="{% url 'users:wish' mountain_id=mountain.id %}?next={{ request.path }}" method="POST">
+                            {% csrf_token %}
+                            <label>
+                                <input type="checkbox" name="wish" 
+                                    {% if user in mountain.wish_users.all %}
+                                        checked
+                                    {% endif %}
+                                    onclick="this.form.submit();"> Wish
+                            </label>
+                        </form>
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active ms-4">검색 결과가 없습니다.</li>
+                </ol>
+            {% endfor %}
+        </ul>
+    </div>
+</main>
+
+{% endblock %}

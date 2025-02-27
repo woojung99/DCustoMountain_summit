@@ -1,0 +1,54 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Mypage</h1>
+        <hr class="main-divider" />
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card text-white mb-4" style="background-color:#206c34;">
+                    <div class="card-body fs-5 fw-semibold">Experienced Mountains</div>
+                    <div class="card-body fs-2 text-end">{{ user.experienced_mountains.count }} / 100</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link text-decoration-none" href="{% url 'users:experienced_list' %}">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card text-white mb-4" style="background-color:#206c34;">
+                    <div class="card-body fs-5 fw-semibold">Wish Mountains</div>
+                    <div class="card-body fs-2 text-end">{{ user.wish_mountains.count }} / 100</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link text-decoration-none" href="{% url 'users:wish_list' %}">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card text-white mb-4" style="background-color:#206c34;">
+                    <div class="card-body fs-5 fw-semibold">Total distance this year</div>
+                    <div class="card-body fs-2 text-end">Total  {{ total_distance }} km</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link text-decoration-none" href="{% url 'users:distance_list' %}">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card text-white mb-4" style="background-color:#206c34;">
+                    <div class="card-body fs-5 fw-semibold">Total duration this year</div>
+                    <div class="card-body fs-2 text-end">Total  {{ total_duration }} hours</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link text-decoration-none" href="{% url 'users:duration_list' %}">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

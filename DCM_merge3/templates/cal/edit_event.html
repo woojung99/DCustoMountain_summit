@@ -1,0 +1,55 @@
+{% extends 'users/base_users.html' %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Edit Event</h1>
+        <hr class="main-divider" />
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <li class="list-group-item">
+                <div class="small justify-content-between mt-2 mb-2">
+                    <label for="mountain">산 :</label>
+                    {{ form.mountain }}
+                </div>
+                <hr class="main-divider" />
+                <div class="small justify-content-between mt-2 mb-2">
+                    <label for="year">날짜 :</label>
+                    {{ form.year }} 년 
+                    <label for="month"></label>
+                    {{ form.month }} 월 
+                    <label for="day"></label>
+                    {{ form.day }} 일 
+                </div>
+                <hr class="main-divider" />
+                <div class="small justify-content-between mt-2 mb-2">
+                    <label for="distance">등산 거리 :</label>
+                    {{ form.distance }} km 
+                </div>
+                <hr class="main-divider" />
+                <div class="small justify-content-between mt-2 mb-2">
+                    <label for="hours">소요 시간 :</label>
+                    {{ form.hours }} 시간 
+                    <label for="minutes"></label>
+                    {{ form.minutes }} 분 
+                </div>
+                <hr class="main-divider" />
+                <div class="small justify-content-between mt-2 mb-2">
+                    <label for="memo">메모 :</label>
+                    {{ form.memo }}
+                </div>
+                <hr class="main-divider" />
+                <div class="small d-flex align-items-center justify-content-between mt-2 mb-2">
+                    <a class="text-decoration-none" href="{% url 'cal:event_detail' event_id=event.id %}">
+                        <div class="text-secondary"><i class="fa-solid fa-rectangle-xmark"></i> Cancel</div>
+                    </a>
+                    <button type="submit" class="btn text-white" style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color:#206c34;">
+                        Add
+                    </button>
+                </div>
+            </li>
+        </form>
+    </div>
+</main>
+{% endblock %}

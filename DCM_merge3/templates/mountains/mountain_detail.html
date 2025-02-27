@@ -1,0 +1,53 @@
+{% extends 'mountains/base_mountains.html' %}
+
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="text-start text-black ms-4 mt-3">
+        <a class="small text-decoration-none" href="{% url 'mountains:infopage' %}">
+            <div class="text-secondary"><i class="fa-solid fa-arrow-left"></i> Back</div>
+        </a>
+    </div>
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h4 class="display-5 fw-bolder">{{ mountain.name }}</h4>
+        </div>
+    </div>
+</header>
+
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-3">
+        <div class="row">
+            <div class="col-xl-4 col-md-4">
+                <img src="{{ mountain.mtn_image.url }}" alt="" class="img-fluid w-100">
+            </div>
+            <div class="col-xl-8 col-md-8">
+                <hr class="main-divider" />
+                <h3 class="display-6">Location</h3>
+                {{ mountain.location }}
+                <hr class="main-divider" />
+                <h3 class="display-6">Height</h3>
+                {{ mountain.height }} km
+                <hr class="main-divider" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-8 col-md-8">
+                <hr class="main-divider" />
+                <h3 class="display-6">Information</h3>
+                {{ mountain.detail_info }}
+                <hr class="main-divider" />
+            </div>
+            <div class="col-xl-4 col-md-4">
+                <hr class="main-divider" />
+                <h3 class="display-6">Lead Time</h3>
+                {{ mountain.leadtime }}
+                <hr class="main-divider" />
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
