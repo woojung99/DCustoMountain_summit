@@ -11,8 +11,14 @@
             <li class="list-group-item">
                 <div class="small justify-content-between mt-2 mb-2">
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-signup">저장</button>
-                    <a href="{% url 'users:profile' user_id=request.user.id %}">취소</a>
+                </div>
+                <div class="small d-flex align-items-center justify-content-between mt-2 mb-2">
+                    <a class="text-decoration-none" href="{% url 'users:profile' user_id=request.user.id %}">
+                        <div class="text-secondary"><i class="fa-solid fa-rectangle-xmark"></i> Cancel</div>
+                    </a>
+                    <button type="submit" class="btn text-white" style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color:#206c34;">
+                        Edit
+                    </button>
                 </div>
             </li>
         </form>

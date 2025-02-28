@@ -21,7 +21,7 @@
                     </div>
                     <hr class="main-divider" />
                     <div class="small justify-content-between mt-2 mb-2">
-                        {% for choice in form.difficuly %}
+                        {% for choice in form.difficulty %}
                         {{ choice }} 
                         {% endfor %}
                     </div>
@@ -55,7 +55,7 @@
                 {% for mountain in page_obj %}
                     <div class="col mb-5">
                         <div class="card h-100">
-                            <img class="card-img-top" src="{{ mountain.mtn_image }}" alt="" width="232" height="154.97"/>
+                            <img class="card-img-top" src="{{ mountain.mtn_image.url }}" alt="" />
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <h5 class="fw-bolder">{{ mountain.name }}</h5>

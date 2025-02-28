@@ -198,7 +198,7 @@ def add_experienced(request):
     form = FilterForm(request.GET or None)
     mountains = Mountain.objects.all()
     location = request.GET.get("location", None)
-    difficulty = request.GET.get("height", None)
+    difficulty = request.GET.get("difficulty", None)
     leadtime = request.GET.get("leadtime", None)
     if location:
         mountains = mountains.filter(location__contains=location)
@@ -217,7 +217,7 @@ def add_wish(request):
     form = FilterForm(request.GET or None)
     mountains = Mountain.objects.all()
     location = request.GET.get("location", None)
-    difficulty = request.GET.get("height", None)
+    difficulty = request.GET.get("difficulty", None)
     leadtime = request.GET.get("leadtime", None)
     if location:
         mountains = mountains.filter(location__contains=location)
